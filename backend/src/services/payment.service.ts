@@ -176,7 +176,7 @@ export const paymentService = {
         },
       );
 
-      const data = await response.json();
+      const data: any = await response.json();
       if (data.resultCode === 0) {
         return data.payUrl;
       } else {
