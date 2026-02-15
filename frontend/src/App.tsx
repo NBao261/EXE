@@ -8,6 +8,7 @@ import UpgradePage from './pages/UpgradePage';
 import PaymentResultPage from './pages/PaymentResultPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
+import MockDefensePage from './pages/MockDefensePage';
 import './App.css';
 
 function App() {
@@ -24,9 +25,12 @@ function App() {
         <Route path="/payment/failed" element={<PaymentResultPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/mock-defense" element={<MockDefensePage />} />
+        <Route path="/mock-defense/:id" element={<MockDefensePage />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+

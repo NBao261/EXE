@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { PDFParse } from "pdf-parse";
 import type { DocumentType } from "../types/document.types.js";
 
 export const documentService = {
@@ -20,16 +21,14 @@ export const documentService = {
   },
 
   /**
-   * Extract text from PDF
+   * Extract text from PDF using pdf-parse v2.x
    */
   async extractFromPdf(filePath: string): Promise<string> {
-    // Dynamic import for pdf-parse
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const pdfParseModule = (await import("pdf-parse")) as any;
-    const pdfParse = pdfParseModule.default || pdfParseModule;
     const dataBuffer = fs.readFileSync(filePath);
-    const data = await pdfParse(dataBuffer);
-    return data.text.trim();
+    const parser = new PDFParse({ data: dataBuffer });
+    const result = await parser.getText();
+    await parser.destroy();
+    return result.text.trim();
   },
 
   /**

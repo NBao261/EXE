@@ -338,4 +338,16 @@ export const quizService = {
     );
     return result as Quiz | null;
   },
+
+  /**
+   * Delete quiz permanently (hard delete)
+   */
+  async deleteQuiz(quizId: string, userId: string): Promise<boolean> {
+    const db = getDb();
+    const result = await db.collection("quizzes").deleteOne({
+      _id: new ObjectId(quizId),
+      userId: new ObjectId(userId),
+    });
+    return result.deletedCount > 0;
+  },
 };

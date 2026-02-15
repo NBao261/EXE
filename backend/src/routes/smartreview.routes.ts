@@ -43,6 +43,9 @@ router.post(
   quizController.regenerateQuiz as RequestHandler,
 );
 
+// Delete quiz (hard delete)
+router.delete("/quizzes/:id", quizController.deleteQuiz as RequestHandler);
+
 // Quota route - no quota check needed here, just return info
 router.get("/user/quota", uploadController.getQuota as RequestHandler);
 

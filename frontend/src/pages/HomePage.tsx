@@ -96,7 +96,10 @@ export default function HomePage() {
           </div>
 
           {/* Mock Defense Card */}
-          <div className="group bg-white rounded-3xl p-8 border-2 border-slate-200 hover:border-purple-400 hover:shadow-xl transition-all cursor-pointer relative overflow-hidden">
+          <div 
+            onClick={() => navigate('/mock-defense')}
+            className="group bg-white rounded-3xl p-8 border-2 border-slate-200 hover:border-purple-400 hover:shadow-xl transition-all cursor-pointer relative overflow-hidden"
+          >
             <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
             
             <div className="relative">

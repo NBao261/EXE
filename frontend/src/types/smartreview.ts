@@ -12,7 +12,7 @@ export interface Document {
   _id: string;
   originalName: string;
   fileType: "pdf" | "docx" | "pptx";
-  status: "processing" | "completed" | "failed";
+  status: "uploading" | "processing" | "completed" | "failed";
   createdAt: string;
 }
 

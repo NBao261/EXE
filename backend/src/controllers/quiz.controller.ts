@@ -198,4 +198,34 @@ export const quizController = {
       res.status(500).json({ success: false, message: "Server error" });
     }
   },
+
+  /**
+   * Delete quiz permanently (hard delete)
+   */
+  async deleteQuiz(req: QuotaRequest, res: Response): Promise<void> {
+    try {
+      const userId = req.user?.userId;
+      const quizId = req.params.id as string;
+
+      if (!userId) {
+        res.status(401).json({ success: false, message: "Unauthorized" });
+        return;
+      }
+
+      const deleted = await quizService.deleteQuiz(quizId, userId);
+
+      if (!deleted) {
+        res.status(404).json({ success: false, message: "Quiz not found" });
+        return;
+      }
+
+      res.json({
+        success: true,
+        message: "Quiz deleted successfully",
+      });
+    } catch (error) {
+      console.error("Delete quiz error:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  },
 };
