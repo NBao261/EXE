@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { paymentService } from "../services/payment.service.js";
 import { QuotaRequest } from "../middlewares/quota.middleware.js";
+import { config } from "../config/index.js";
 
 export const paymentController = {
   /**
@@ -62,13 +63,9 @@ export const paymentController = {
       // but double check is handled by idempotency or status check.
       // For simplicity/robustness, we can try to update here too.
       await paymentService.handlePaymentSuccess(orderId);
-      res.redirect(
-        `${process.env.APP_URL || "http://localhost:3000"}/payment/success?orderId=${orderId}`,
-      );
+      res.redirect(`${config.appUrl}/payment/success?orderId=${orderId}`);
     } else {
-      res.redirect(
-        `${process.env.APP_URL || "http://localhost:3000"}/payment/failed?orderId=${orderId}`,
-      );
+      res.redirect(`${config.appUrl}/payment/failed?orderId=${orderId}`);
     }
   },
 
@@ -127,13 +124,9 @@ export const paymentController = {
     const { resultCode, orderId } = req.query;
     if (Number(resultCode) === 0) {
       await paymentService.handlePaymentSuccess(orderId as string);
-      res.redirect(
-        `${process.env.APP_URL || "http://localhost:3000"}/payment/success?orderId=${orderId}`,
-      );
+      res.redirect(`${config.appUrl}/payment/success?orderId=${orderId}`);
     } else {
-      res.redirect(
-        `${process.env.APP_URL || "http://localhost:3000"}/payment/failed?orderId=${orderId}`,
-      );
+      res.redirect(`${config.appUrl}/payment/failed?orderId=${orderId}`);
     }
   },
 };

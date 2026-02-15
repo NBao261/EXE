@@ -155,7 +155,12 @@ export const quizController = {
       res.status(500).json({
         success: false,
         message: "Failed to regenerate quiz",
-        error: error instanceof Error ? error.message : "Unknown error",
+        error:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : "Unknown error"
+            : undefined,
       });
     }
   },

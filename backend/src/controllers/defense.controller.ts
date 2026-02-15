@@ -48,7 +48,12 @@ export const defenseController = {
       res.status(500).json({
         success: false,
         message: "Failed to process document",
-        error: error instanceof Error ? error.message : "Unknown error",
+        error:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : "Unknown error"
+            : undefined,
       });
     }
   },
@@ -149,7 +154,12 @@ export const defenseController = {
       res.status(500).json({
         success: false,
         message: "Failed to start defense",
-        error: error instanceof Error ? error.message : "Unknown error",
+        error:
+          process.env.NODE_ENV === "development"
+            ? error instanceof Error
+              ? error.message
+              : "Unknown error"
+            : undefined,
       });
     }
   },

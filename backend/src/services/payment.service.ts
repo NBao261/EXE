@@ -217,7 +217,14 @@ export const paymentService = {
       .update(rawSignature)
       .digest("hex");
 
-    return signature === generatedSignature;
+    try {
+      return crypto.timingSafeEqual(
+        Buffer.from(signature),
+        Buffer.from(generatedSignature),
+      );
+    } catch {
+      return false;
+    }
   },
 
   /**
@@ -247,7 +254,14 @@ export const paymentService = {
     const hmac = crypto.createHmac("sha512", secretKey);
     const signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
 
-    return secureHash === signed;
+    try {
+      return crypto.timingSafeEqual(
+        Buffer.from(secureHash),
+        Buffer.from(signed),
+      );
+    } catch {
+      return false;
+    }
   },
 
   /**

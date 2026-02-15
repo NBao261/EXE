@@ -8,8 +8,16 @@ export const config = {
   corsOrigin: process.env.CORS_ORIGIN || "http://localhost:5173",
   mongoUri: process.env.MONGODB_URI || "mongodb://localhost:27017/exe_auth",
   jwtSecret:
-    process.env.JWT_SECRET || "your-super-secret-key-change-in-production",
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
+    process.env.JWT_SECRET ||
+    (() => {
+      if (process.env.NODE_ENV === "production")
+        throw new Error("JWT_SECRET is required in production");
+      return "dev-only-secret-do-not-use-in-prod";
+    })(),
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
+
+  // App URL for redirects
+  appUrl: process.env.APP_URL || "http://localhost:5173",
 
   // Upload settings
   uploadDir: process.env.UPLOAD_DIR || "./uploads",
