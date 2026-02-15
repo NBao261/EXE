@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from 'react-router-dom';
-import { GraduationCap, FileText, Mic, Sparkles, Loader2 } from 'lucide-react';
-import { loginSchema, type LoginFormData } from '../validators/auth';
-import { authService } from '../services/auth.service';
-import { useAuthStore } from '../stores/authStore';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "react-router-dom";
+import { GraduationCap, FileText, Mic, Sparkles, Loader2 } from "lucide-react";
+import { loginSchema, type LoginFormData } from "../validators/auth";
+import { authService } from "../services/auth.service";
+import { useAuthStore } from "../stores/authStore";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -26,9 +26,9 @@ export default function LoginPage() {
       setLoading(true);
       const response = await authService.login(data);
       setAuth(response.data.user, response.data.token);
-      navigate('/');
+      navigate("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Đăng nhập thất bại');
+      setError(err instanceof Error ? err.message : "Đăng nhập thất bại");
     } finally {
       setLoading(false);
     }
@@ -39,18 +39,19 @@ export default function LoginPage() {
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:flex-1 gradient-brand relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(6,182,212,0.15),transparent_50%)]" />
-        
+
         <div className="relative z-10 flex flex-col justify-center px-12 xl:px-16 text-white max-w-xl mx-auto">
           {/* Logo */}
           <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-8">
             <GraduationCap className="w-9 h-9" />
           </div>
-          
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">EduAI Pro</h1>
+
+          <h1 className="text-4xl font-bold mb-4 tracking-tight">Revo</h1>
           <p className="text-lg text-white/90 mb-10 leading-relaxed">
-            Nền tảng EdTech thông minh giúp sinh viên ôn thi và luyện tập bảo vệ đồ án với AI
+            Nền tảng EdTech thông minh giúp sinh viên ôn thi và luyện tập bảo vệ
+            đồ án với Revo
           </p>
-          
+
           {/* 2 Key Features */}
           <div className="space-y-6">
             {/* Feature 1: Smart Review */}
@@ -65,7 +66,8 @@ export default function LoginPage() {
                     <Sparkles className="w-4 h-4 text-yellow-400" />
                   </h3>
                   <p className="text-white/80 text-sm leading-relaxed">
-                    Upload Slide, PDF, Word → AI tự động tạo Quiz và Flashcard giúp ôn thi hiệu quả
+                    Upload Slide, PDF, Word → Revo tự động tạo Quiz và Flashcard
+                    giúp ôn thi hiệu quả
                   </p>
                 </div>
               </div>
@@ -83,7 +85,8 @@ export default function LoginPage() {
                     <Sparkles className="w-4 h-4 text-yellow-400" />
                   </h3>
                   <p className="text-white/80 text-sm leading-relaxed">
-                    Upload báo cáo → AI đóng vai hội đồng phản biện bằng giọng nói, giúp tự tin bảo vệ đồ án
+                    Upload báo cáo → Revo đóng vai hội đồng phản biện bằng giọng
+                    nói, giúp tự tin bảo vệ đồ án
                   </p>
                 </div>
               </div>
@@ -100,12 +103,16 @@ export default function LoginPage() {
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-slate-900">EduAI Pro</span>
+            <span className="text-xl font-bold text-slate-900">Revo</span>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Đăng nhập</h2>
-            <p className="text-slate-600">Chào mừng bạn quay lại! Nhập thông tin để tiếp tục.</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              Đăng nhập
+            </h2>
+            <p className="text-slate-600">
+              Chào mừng bạn quay lại! Nhập thông tin để tiếp tục.
+            </p>
           </div>
 
           {error && (
@@ -116,34 +123,44 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Email
               </label>
               <input
                 id="email"
                 type="email"
-                {...register('email')}
+                {...register("email")}
                 className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                 placeholder="student@university.edu.vn"
               />
               {errors.email && (
-                <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Mật khẩu
               </label>
               <input
                 id="password"
                 type="password"
-                {...register('password')}
+                {...register("password")}
                 className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                 placeholder="••••••••"
               />
               {errors.password && (
-                <p className="mt-2 text-sm text-red-500">{errors.password.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -158,14 +175,17 @@ export default function LoginPage() {
                   Đang xử lý...
                 </>
               ) : (
-                'Đăng nhập'
+                "Đăng nhập"
               )}
             </button>
           </form>
 
           <p className="mt-8 text-center text-slate-600">
-            Chưa có tài khoản?{' '}
-            <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+            Chưa có tài khoản?{" "}
+            <Link
+              to="/register"
+              className="text-blue-600 font-semibold hover:underline"
+            >
               Đăng ký ngay
             </Link>
           </p>

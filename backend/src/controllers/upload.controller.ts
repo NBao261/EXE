@@ -48,7 +48,7 @@ export const uploadController = {
 
       res.status(201).json({
         success: true,
-        message: "File uploaded successfully. Quiz đang được tạo...",
+        message: "File uploaded successfully. Revo đang tạo quiz...",
         data: {
           document: {
             _id: document._id,
@@ -120,7 +120,7 @@ export const uploadController = {
 
       res.status(201).json({
         success: true,
-        message: `${files.length} files uploaded. Đang gộp và tạo quiz...`,
+        message: `${files.length} files uploaded. Revo đang gộp và tạo quiz...`,
         data: {
           documents: documents.map((d) => ({
             _id: d._id,

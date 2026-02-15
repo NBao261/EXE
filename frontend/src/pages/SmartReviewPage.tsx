@@ -275,7 +275,7 @@ export default function SmartReviewPage() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-200/50 mb-4">
             <Sparkles className="w-4 h-4 text-blue-600" />
             <span className="text-sm font-medium text-blue-700">
-              Powered by AI
+              Powered by Revo
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
@@ -284,7 +284,7 @@ export default function SmartReviewPage() {
             </span>
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl">
-            Upload tài liệu học tập và để AI tạo{" "}
+            Upload tài liệu học tập và để Revo tạo{" "}
             <span className="font-semibold text-blue-600">Quiz</span> &{" "}
             <span className="font-semibold text-cyan-600">Flashcard</span> giúp
             bạn ôn thi hiệu quả
@@ -361,7 +361,7 @@ export default function SmartReviewPage() {
                       </div>
                       <div>
                         <p className="font-semibold text-blue-700">
-                          AI đang phân tích...
+                          Revo đang phân tích...
                         </p>
                         <p className="text-sm text-blue-600">
                           Đang tạo quiz từ tài liệu của bạn
@@ -422,7 +422,7 @@ export default function SmartReviewPage() {
                     Chưa có quiz nào
                   </h3>
                   <p className="text-slate-500">
-                    Upload tài liệu để AI tạo quiz cho bạn
+                    Upload tài liệu để Revo tạo quiz cho bạn
                   </p>
                 </div>
               ) : (
@@ -656,7 +656,7 @@ export default function SmartReviewPage() {
                 <div className="flex items-center gap-2 text-sm">
                   <Sparkles className="w-4 h-4 text-amber-600" />
                   <span className="text-slate-700">
-                    AI nâng cao với độ chính xác cao hơn
+                    Revo nâng cao với độ chính xác cao hơn
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">

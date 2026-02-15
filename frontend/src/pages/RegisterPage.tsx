@@ -1,11 +1,20 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from 'react-router-dom';
-import { GraduationCap, FileText, Mic, Sparkles, Users, Star, Loader2, CheckCircle } from 'lucide-react';
-import { registerSchema, type RegisterFormData } from '../validators/auth';
-import { authService } from '../services/auth.service';
-import { useAuthStore } from '../stores/authStore';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  GraduationCap,
+  FileText,
+  Mic,
+  Sparkles,
+  Users,
+  Star,
+  Loader2,
+  CheckCircle,
+} from "lucide-react";
+import { registerSchema, type RegisterFormData } from "../validators/auth";
+import { authService } from "../services/auth.service";
+import { useAuthStore } from "../stores/authStore";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -31,9 +40,9 @@ export default function RegisterPage() {
         password: data.password,
       });
       setSuccess(true);
-      setTimeout(() => navigate('/login'), 2000);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Đăng ký thất bại');
+      setError(err instanceof Error ? err.message : "Đăng ký thất bại");
     } finally {
       setLoading(false);
     }
@@ -46,7 +55,9 @@ export default function RegisterPage() {
           <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Đăng ký thành công!</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">
+            Đăng ký thành công!
+          </h2>
           <p className="text-slate-600">Đang chuyển đến trang đăng nhập...</p>
         </div>
       </div>
@@ -58,17 +69,18 @@ export default function RegisterPage() {
       {/* Left Side - Branding */}
       <div className="hidden lg:flex lg:flex-1 gradient-brand relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(6,182,212,0.15),transparent_50%)]" />
-        
+
         <div className="relative z-10 flex flex-col justify-center px-12 xl:px-16 text-white max-w-xl mx-auto">
           <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-8">
             <GraduationCap className="w-9 h-9" />
           </div>
-          
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">EduAI Pro</h1>
+
+          <h1 className="text-4xl font-bold mb-4 tracking-tight">Revo</h1>
           <p className="text-lg text-white/90 mb-8 leading-relaxed">
-            Tham gia cùng hàng nghìn sinh viên đang sử dụng AI để ôn thi và bảo vệ đồ án thành công
+            Tham gia cùng hàng nghìn sinh viên đang sử dụng Revo để ôn thi và
+            bảo vệ đồ án thành công
           </p>
-          
+
           {/* Stats */}
           <div className="flex gap-6 mb-8">
             <div className="flex items-center gap-2">
@@ -91,7 +103,9 @@ export default function RegisterPage() {
                 <h3 className="font-medium flex items-center gap-2">
                   Smart Review <Sparkles className="w-3 h-3 text-yellow-400" />
                 </h3>
-                <p className="text-sm text-white/70">Upload tài liệu → AI tạo Quiz/Flashcard</p>
+                <p className="text-sm text-white/70">
+                  Upload tài liệu → Revo tạo Quiz/Flashcard
+                </p>
               </div>
             </div>
 
@@ -103,7 +117,9 @@ export default function RegisterPage() {
                 <h3 className="font-medium flex items-center gap-2">
                   Mock Defense <Sparkles className="w-3 h-3 text-yellow-400" />
                 </h3>
-                <p className="text-sm text-white/70">AI phản biện bằng giọng nói</p>
+                <p className="text-sm text-white/70">
+                  Revo phản biện bằng giọng nói
+                </p>
               </div>
             </div>
           </div>
@@ -117,12 +133,16 @@ export default function RegisterPage() {
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-slate-900">EduAI Pro</span>
+            <span className="text-xl font-bold text-slate-900">Revo</span>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Tạo tài khoản</h2>
-            <p className="text-slate-600">Bắt đầu hành trình học tập thông minh cùng AI</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              Tạo tài khoản
+            </h2>
+            <p className="text-slate-600">
+              Bắt đầu hành trình học tập thông minh cùng Revo
+            </p>
           </div>
 
           {error && (
@@ -133,66 +153,86 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Họ và tên
               </label>
               <input
                 id="name"
                 type="text"
-                {...register('name')}
+                {...register("name")}
                 className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                 placeholder="Nguyễn Văn A"
               />
               {errors.name && (
-                <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Email
               </label>
               <input
                 id="email"
                 type="email"
-                {...register('email')}
+                {...register("email")}
                 className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                 placeholder="student@university.edu.vn"
               />
               {errors.email && (
-                <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Mật khẩu
               </label>
               <input
                 id="password"
                 type="password"
-                {...register('password')}
+                {...register("password")}
                 className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                 placeholder="Tối thiểu 6 ký tự"
               />
               {errors.password && (
-                <p className="mt-2 text-sm text-red-500">{errors.password.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-2">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
                 Xác nhận mật khẩu
               </label>
               <input
                 id="confirmPassword"
                 type="password"
-                {...register('confirmPassword')}
+                {...register("confirmPassword")}
                 className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                 placeholder="Nhập lại mật khẩu"
               />
               {errors.confirmPassword && (
-                <p className="mt-2 text-sm text-red-500">{errors.confirmPassword.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
 
@@ -207,14 +247,17 @@ export default function RegisterPage() {
                   Đang xử lý...
                 </>
               ) : (
-                'Đăng ký miễn phí'
+                "Đăng ký miễn phí"
               )}
             </button>
           </form>
 
           <p className="mt-8 text-center text-slate-600">
-            Đã có tài khoản?{' '}
-            <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+            Đã có tài khoản?{" "}
+            <Link
+              to="/login"
+              className="text-blue-600 font-semibold hover:underline"
+            >
               Đăng nhập
             </Link>
           </p>

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Mic,
   MicOff,
@@ -14,15 +14,18 @@ import {
   FileText,
   GraduationCap,
   Settings,
-} from 'lucide-react';
-import { useAuthStore } from '../stores/authStore';
-import { defenseService, type DefenseSession } from '../services/defense.service';
-import { useSpeechToText } from '../hooks/useSpeechToText';
-import { useTextToSpeech } from '../hooks/useTextToSpeech';
-import Header from '../components/Header';
+} from "lucide-react";
+import { useAuthStore } from "../stores/authStore";
+import {
+  defenseService,
+  type DefenseSession,
+} from "../services/defense.service";
+import { useSpeechToText } from "../hooks/useSpeechToText";
+import { useTextToSpeech } from "../hooks/useTextToSpeech";
+import Header from "../components/Header";
 
 interface Message {
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: Date;
 }
@@ -36,17 +39,19 @@ export default function MockDefensePage() {
 
   // Session state
   const [sessions, setSessions] = useState<DefenseSession[]>([]);
-  const [currentSession, setCurrentSession] = useState<DefenseSession | null>(null);
+  const [currentSession, setCurrentSession] = useState<DefenseSession | null>(
+    null,
+  );
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [textInput, setTextInput] = useState('');
+  const [textInput, setTextInput] = useState("");
 
   // Upload state
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadTitle, setUploadTitle] = useState('');
+  const [uploadTitle, setUploadTitle] = useState("");
 
   // Speech hooks
   const {
@@ -57,7 +62,7 @@ export default function MockDefensePage() {
     startListening,
     stopListening,
     resetTranscript,
-  } = useSpeechToText({ lang: 'vi-VN', continuous: true });
+  } = useSpeechToText({ lang: "vi-VN", continuous: true });
 
   const {
     isSpeaking,
@@ -69,20 +74,20 @@ export default function MockDefensePage() {
     cancel: cancelSpeech,
     setVoice,
     setRate,
-  } = useTextToSpeech({ lang: 'vi-VN', rate: 1.1 });
+  } = useTextToSpeech({ lang: "vi-VN", rate: 1.1 });
 
   // Voice settings modal
   const [showVoiceSettings, setShowVoiceSettings] = useState(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // Load data on mount
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     loadSessions();
@@ -109,7 +114,7 @@ export default function MockDefensePage() {
       const data = await defenseService.getSessions();
       setSessions(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load sessions');
+      setError(err instanceof Error ? err.message : "Failed to load sessions");
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +127,7 @@ export default function MockDefensePage() {
       setCurrentSession(session);
       setMessages([]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Session not found');
+      setError(err instanceof Error ? err.message : "Session not found");
     } finally {
       setIsProcessing(false);
     }
@@ -132,24 +137,27 @@ export default function MockDefensePage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.type !== 'application/pdf') {
-      setError('Chỉ hỗ trợ file PDF');
+    if (file.type !== "application/pdf") {
+      setError("Chỉ hỗ trợ file PDF");
       return;
     }
 
     try {
       setIsUploading(true);
       setError(null);
-      const session = await defenseService.uploadDocument(file, uploadTitle || undefined);
-      setSessions(prev => [session, ...prev]);
-      setUploadTitle('');
+      const session = await defenseService.uploadDocument(
+        file,
+        uploadTitle || undefined,
+      );
+      setSessions((prev) => [session, ...prev]);
+      setUploadTitle("");
       navigate(`/mock-defense/${session._id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
     }
   };
@@ -159,20 +167,22 @@ export default function MockDefensePage() {
 
     try {
       setIsProcessing(true);
-      const openingQuestion = await defenseService.startDefense(currentSession._id);
-      
+      const openingQuestion = await defenseService.startDefense(
+        currentSession._id,
+      );
+
       const assistantMessage: Message = {
-        role: 'assistant',
+        role: "assistant",
         content: openingQuestion,
         timestamp: new Date(),
       };
       setMessages([assistantMessage]);
-      
+
       if (ttsSupported) {
         speak(openingQuestion);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to start defense');
+      setError(err instanceof Error ? err.message : "Failed to start defense");
     } finally {
       setIsProcessing(false);
     }
@@ -182,29 +192,32 @@ export default function MockDefensePage() {
     if (!currentSession || !content.trim()) return;
 
     const userMessage: Message = {
-      role: 'user',
+      role: "user",
       content: content.trim(),
       timestamp: new Date(),
     };
-    setMessages(prev => [...prev, userMessage]);
-    setTextInput('');
+    setMessages((prev) => [...prev, userMessage]);
+    setTextInput("");
 
     try {
       setIsSending(true);
-      const response = await defenseService.chat(currentSession._id, content.trim());
-      
+      const response = await defenseService.chat(
+        currentSession._id,
+        content.trim(),
+      );
+
       const assistantMessage: Message = {
-        role: 'assistant',
+        role: "assistant",
         content: response.response,
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, assistantMessage]);
-      
+      setMessages((prev) => [...prev, assistantMessage]);
+
       if (ttsSupported) {
         speak(response.response);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Chat failed');
+      setError(err instanceof Error ? err.message : "Chat failed");
     } finally {
       setIsSending(false);
     }
@@ -243,7 +256,9 @@ export default function MockDefensePage() {
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-200/50 mb-4">
               <GraduationCap className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium text-orange-700">Mock Defense</span>
+              <span className="text-sm font-medium text-orange-700">
+                Mock Defense
+              </span>
             </div>
             <h1 className="text-4xl font-bold mb-4">
               <span className="bg-gradient-to-r from-slate-900 via-orange-800 to-amber-700 bg-clip-text text-transparent">
@@ -251,7 +266,8 @@ export default function MockDefensePage() {
               </span>
             </h1>
             <p className="text-slate-600 max-w-2xl mx-auto">
-              Upload đồ án và luyện tập bảo vệ với AI đóng vai giáo viên phản biện
+              Upload đồ án và luyện tập bảo vệ với Revo đóng vai giáo viên phản
+              biện
             </p>
           </div>
 
@@ -261,7 +277,10 @@ export default function MockDefensePage() {
                 <AlertCircle className="w-5 h-5 text-white" />
               </div>
               <p className="text-red-600 flex-1">{error}</p>
-              <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700 font-medium">
+              <button
+                onClick={() => setError(null)}
+                className="text-red-500 hover:text-red-700 font-medium"
+              >
                 Đóng
               </button>
             </div>
@@ -304,7 +323,7 @@ export default function MockDefensePage() {
                 ) : (
                   <Upload className="w-5 h-5" />
                 )}
-                {isUploading ? 'Đang xử lý...' : 'Chọn file PDF'}
+                {isUploading ? "Đang xử lý..." : "Chọn file PDF"}
               </button>
             </div>
           </div>
@@ -317,7 +336,9 @@ export default function MockDefensePage() {
               </div>
               <div>
                 <h2 className="font-bold text-slate-800">Phiên Bảo Vệ</h2>
-                <p className="text-xs text-slate-500">{sessions.length} phiên</p>
+                <p className="text-xs text-slate-500">
+                  {sessions.length} phiên
+                </p>
               </div>
             </div>
 
@@ -339,7 +360,9 @@ export default function MockDefensePage() {
                     <FileText className="w-9 h-9 text-slate-400" />
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-700 mb-2">Chưa có phiên bảo vệ nào</h3>
+                <h3 className="text-lg font-semibold text-slate-700 mb-2">
+                  Chưa có phiên bảo vệ nào
+                </h3>
                 <p className="text-slate-500">Upload đồ án để bắt đầu</p>
               </div>
             ) : (
@@ -360,15 +383,24 @@ export default function MockDefensePage() {
                           {session.title}
                         </h3>
                         <div className="flex items-center gap-3 text-sm text-slate-500 mt-1">
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                            session.status === 'ready' ? 'bg-emerald-100 text-emerald-700' :
-                            session.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
-                            session.status === 'completed' ? 'bg-purple-100 text-purple-700' :
-                            'bg-amber-100 text-amber-700'
-                          }`}>
-                            {session.status === 'ready' ? 'Sẵn sàng' :
-                             session.status === 'in_progress' ? 'Đang diễn ra' :
-                             session.status === 'completed' ? 'Hoàn thành' : 'Chuẩn bị'}
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                              session.status === "ready"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : session.status === "in_progress"
+                                  ? "bg-blue-100 text-blue-700"
+                                  : session.status === "completed"
+                                    ? "bg-purple-100 text-purple-700"
+                                    : "bg-amber-100 text-amber-700"
+                            }`}
+                          >
+                            {session.status === "ready"
+                              ? "Sẵn sàng"
+                              : session.status === "in_progress"
+                                ? "Đang diễn ra"
+                                : session.status === "completed"
+                                  ? "Hoàn thành"
+                                  : "Chuẩn bị"}
                           </span>
                           <span>{session.totalChunks} phần</span>
                         </div>
@@ -398,17 +430,17 @@ export default function MockDefensePage() {
       <header className="relative border-b border-slate-200/80 bg-white/70 backdrop-blur-xl shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <button
-            onClick={() => navigate('/mock-defense')}
+            onClick={() => navigate("/mock-defense")}
             className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="hidden sm:inline">Quay lại</span>
           </button>
-          
+
           <div className="flex items-center gap-2">
             <GraduationCap className="w-5 h-5 text-orange-500" />
             <span className="font-semibold text-slate-800 truncate max-w-[200px]">
-              {currentSession?.title || 'Đang tải...'}
+              {currentSession?.title || "Đang tải..."}
             </span>
           </div>
 
@@ -421,7 +453,7 @@ export default function MockDefensePage() {
             >
               <Settings className="w-5 h-5" />
             </button>
-            
+
             {isSpeaking && (
               <button
                 onClick={cancelSpeech}
@@ -442,7 +474,12 @@ export default function MockDefensePage() {
             <div className="mb-4 p-4 rounded-2xl bg-gradient-to-r from-red-50 to-rose-50 border border-red-200/50 flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-red-500" />
               <p className="text-red-600 flex-1">{error}</p>
-              <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">×</button>
+              <button
+                onClick={() => setError(null)}
+                className="text-red-500 hover:text-red-700"
+              >
+                ×
+              </button>
             </div>
           )}
 
@@ -461,9 +498,12 @@ export default function MockDefensePage() {
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center border-2 border-orange-200">
                 <GraduationCap className="w-12 h-12 text-orange-500" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-3">Sẵn sàng bảo vệ?</h2>
+              <h2 className="text-2xl font-bold text-slate-800 mb-3">
+                Sẵn sàng bảo vệ?
+              </h2>
               <p className="text-slate-600 mb-8 max-w-md mx-auto">
-                Giáo viên AI sẽ đặt câu hỏi về đồ án của bạn. Hãy chuẩn bị tinh thần!
+                Giáo viên Revo sẽ đặt câu hỏi về đồ án của bạn. Hãy chuẩn bị
+                tinh thần!
               </p>
               <button
                 onClick={startDefense}
@@ -478,14 +518,16 @@ export default function MockDefensePage() {
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  <div className={`max-w-[80%] p-4 rounded-2xl shadow-sm ${
-                    msg.role === 'user'
-                      ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white'
-                      : 'bg-white border border-slate-200 text-slate-800'
-                  }`}>
-                    {msg.role === 'assistant' && (
+                  <div
+                    className={`max-w-[80%] p-4 rounded-2xl shadow-sm ${
+                      msg.role === "user"
+                        ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white"
+                        : "bg-white border border-slate-200 text-slate-800"
+                    }`}
+                  >
+                    {msg.role === "assistant" && (
                       <div className="flex items-center gap-2 mb-2 text-orange-600 text-sm">
                         <GraduationCap className="w-4 h-4" />
                         <span className="font-semibold">Giáo viên</span>
@@ -524,7 +566,9 @@ export default function MockDefensePage() {
                   <Mic className="w-4 h-4 animate-pulse" />
                   <span>Đang nghe...</span>
                 </div>
-                <p className="text-slate-800">{transcript || interimTranscript || '...'}</p>
+                <p className="text-slate-800">
+                  {transcript || interimTranscript || "..."}
+                </p>
               </div>
             )}
 
@@ -535,16 +579,23 @@ export default function MockDefensePage() {
                 disabled={!sttSupported || isSending}
                 className={`p-4 rounded-2xl transition-all ${
                   isListening
-                    ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30'
-                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700'
+                    ? "bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30"
+                    : "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700"
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
-                title={isListening ? 'Dừng ghi âm' : 'Bắt đầu nói'}
+                title={isListening ? "Dừng ghi âm" : "Bắt đầu nói"}
               >
-                {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
+                {isListening ? (
+                  <MicOff className="w-6 h-6" />
+                ) : (
+                  <Mic className="w-6 h-6" />
+                )}
               </button>
 
               {/* Text input */}
-              <form onSubmit={handleTextSubmit} className="flex-1 flex items-center gap-2">
+              <form
+                onSubmit={handleTextSubmit}
+                className="flex-1 flex items-center gap-2"
+              >
                 <input
                   type="text"
                   value={textInput}
@@ -576,7 +627,8 @@ export default function MockDefensePage() {
 
             {!sttSupported && (
               <p className="text-amber-600 text-sm mt-2 text-center">
-                ⚠️ Trình duyệt không hỗ trợ ghi âm giọng nói. Vui lòng dùng Chrome.
+                ⚠️ Trình duyệt không hỗ trợ ghi âm giọng nói. Vui lòng dùng
+                Chrome.
               </p>
             )}
           </div>
@@ -592,7 +644,9 @@ export default function MockDefensePage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
                   <Settings className="w-5 h-5 text-white" />
                 </div>
-                <h2 className="text-xl font-bold text-slate-800">Cài đặt giọng đọc</h2>
+                <h2 className="text-xl font-bold text-slate-800">
+                  Cài đặt giọng đọc
+                </h2>
               </div>
               <button
                 onClick={() => setShowVoiceSettings(false)}
@@ -609,23 +663,22 @@ export default function MockDefensePage() {
                   Giọng đọc
                 </label>
                 <select
-                  value={selectedVoice?.name || ''}
+                  value={selectedVoice?.name || ""}
                   onChange={(e) => setVoice(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-300"
                 >
                   {voices
-                    .filter((v) => v.lang.startsWith('vi'))
+                    .filter((v) => v.lang.startsWith("vi"))
                     .map((voice) => (
                       <option key={voice.name} value={voice.name}>
                         {voice.name} ({voice.lang})
                       </option>
                     ))}
-                  {voices.filter((v) => v.lang.startsWith('vi')).length === 0 && (
-                    <option value="">Không có giọng tiếng Việt</option>
-                  )}
+                  {voices.filter((v) => v.lang.startsWith("vi")).length ===
+                    0 && <option value="">Không có giọng tiếng Việt</option>}
                 </select>
                 <p className="text-xs text-slate-500 mt-1">
-                  Giọng hiện tại: {selectedVoice?.name || 'Mặc định'}
+                  Giọng hiện tại: {selectedVoice?.name || "Mặc định"}
                 </p>
               </div>
 
@@ -652,12 +705,12 @@ export default function MockDefensePage() {
 
               {/* Test Button */}
               <button
-                onClick={() => speak('Xin chào! Đây là giọng đọc tiếng Việt.')}
+                onClick={() => speak("Xin chào! Đây là giọng đọc tiếng Việt.")}
                 disabled={isSpeaking}
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold hover:from-orange-600 hover:to-amber-600 hover:shadow-lg hover:shadow-orange-500/30 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
               >
                 <Volume2 className="w-5 h-5" />
-                {isSpeaking ? 'Đang phát...' : 'Nghe thử'}
+                {isSpeaking ? "Đang phát..." : "Nghe thử"}
               </button>
             </div>
           </div>
