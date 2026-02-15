@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Check, Shield, CreditCard, Smartphone, Loader2 } from 'lucide-react';
-import { paymentService } from '../services/payment.service';
-import { useAuthStore } from '../stores/authStore';
-import Header from '../components/Header';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Check, Shield, CreditCard, Smartphone, Loader2 } from "lucide-react";
+import { paymentService } from "../services/payment.service";
+import { useAuthStore } from "../stores/authStore";
+import { useLanguageStore } from "../stores/languageStore";
+import Header from "../components/Header";
 
 export default function UpgradePage() {
   const navigate = useNavigate();
   const { token, user } = useAuthStore();
+  const { language } = useLanguageStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handlePayment = async (provider: 'momo' | 'vnpay') => {
+  const t = (vi: string, en: string) => (language === "vi" ? vi : en);
+
+  const handlePayment = async (provider: "momo" | "vnpay") => {
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -23,92 +27,129 @@ export default function UpgradePage() {
       const url = await paymentService.createPaymentUrl(provider, token);
       window.location.href = url;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to initiate payment');
+      setError(
+        err instanceof Error ? err.message : "Failed to initiate payment",
+      );
       setIsLoading(false);
     }
   };
 
+  const benefits =
+    language === "vi"
+      ? [
+          "Tải lên 100 tài liệu/ngày",
+          "Tốc độ xử lý ưu tiên (Nhanh gấp 2 lần)",
+          "Lưu trữ không giới hạn",
+          "Tạo Quiz & Flashcard không giới hạn",
+          "Hỗ trợ định dạng PDF, Word, PPTX",
+          "Không có quảng cáo",
+        ]
+      : [
+          "Upload 100 documents/day",
+          "Priority processing (2x faster)",
+          "Unlimited storage",
+          "Unlimited Quiz & Flashcard creation",
+          "PDF, Word, PPTX support",
+          "No ads",
+        ];
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header showBack title="Nâng cấp Premium" />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <Header showBack title={t("Nâng cấp Premium", "Upgrade to Premium")} />
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">Nâng cấp lên Premium</h1>
-          <p className="text-lg text-slate-600">Mở khóa toàn bộ tính năng và không giới hạn lượt tải lên</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            {t("Nâng cấp lên Premium", "Upgrade to Premium")}
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            {t(
+              "Mở khóa toàn bộ tính năng và không giới hạn lượt tải lên",
+              "Unlock all features and unlimited uploads",
+            )}
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-start">
           {/* Benefits Card */}
-          <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700">
+            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2">
               <Shield className="w-5 h-5 text-blue-600" />
-              Quyền lợi Premium
+              {t("Quyền lợi Premium", "Premium Benefits")}
             </h2>
-            
+
             <ul className="space-y-4">
-              {[
-                'Tải lên 100 tài liệu/ngày',
-                'Tốc độ xử lý ưu tiên (Nhanh gấp 2 lần)',
-                'Lưu trữ không giới hạn',
-                'Tạo Quiz & Flashcard không giới hạn',
-                'Hỗ trợ định dạng PDF, Word, PPTX',
-                'Không có quảng cáo'
-              ].map((benefit, idx) => (
+              {benefits.map((benefit, idx) => (
                 <li key={idx} className="flex items-start gap-3">
-                  <div className="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-green-600" />
+                  <div className="mt-1 w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3 h-3 text-green-600 dark:text-green-400" />
                   </div>
-                  <span className="text-slate-600">{benefit}</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    {benefit}
+                  </span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Payment Card */}
-          <div className="bg-white rounded-3xl p-8 border-2 border-blue-100 shadow-xl shadow-blue-500/10 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-            
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border-2 border-blue-100 dark:border-blue-900/50 shadow-lg relative overflow-hidden">
             <div className="text-center mb-8">
-              <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Gói tháng</span>
+              <span className="text-sm font-semibold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">
+                {t("Gói tháng", "Monthly plan")}
+              </span>
               <div className="mt-4 flex items-baseline justify-center gap-1">
-                <span className="text-4xl font-bold text-slate-900">30.000</span>
-                <span className="text-slate-500 font-medium">đ / tháng</span>
+                <span className="text-4xl font-bold text-slate-900 dark:text-slate-100">
+                  30.000
+                </span>
+                <span className="text-slate-500 dark:text-slate-400 font-medium">
+                  đ / {t("tháng", "month")}
+                </span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">Thanh toán một lần, không tự động gia hạn</p>
+              <p className="text-sm text-slate-400 dark:text-slate-500 mt-2">
+                {t(
+                  "Thanh toán một lần, không tự động gia hạn",
+                  "One-time payment, no auto-renewal",
+                )}
+              </p>
             </div>
 
             {error && (
-              <div className="mb-6 p-4 rounded-xl bg-red-50 text-red-600 text-sm">
+              <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm">
                 {error}
               </div>
             )}
 
             <div className="space-y-3">
-              {user?.plan === 'premium' ? (
+              {user?.plan === "premium" ? (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="w-8 h-8 text-blue-600" />
+                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Bạn đang là Premium</h3>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                    {t("Bạn đang là Premium", "You are Premium")}
+                  </h3>
                   {user.premiumExpiresAt && (
-                     <p className="text-slate-600">
-                       Hết hạn: {new Date(user.premiumExpiresAt).toLocaleDateString('vi-VN')}
-                     </p>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {t("Hết hạn:", "Expires:")}{" "}
+                      {new Date(user.premiumExpiresAt).toLocaleDateString(
+                        language === "vi" ? "vi-VN" : "en-US",
+                      )}
+                    </p>
                   )}
                   <div className="mt-6">
                     <button
-                      onClick={() => navigate('/')}
-                      className="px-6 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium"
+                      onClick={() => navigate("/")}
+                      className="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors font-medium"
                     >
-                      Quay về trang chủ
+                      {t("Quay về trang chủ", "Go to home")}
                     </button>
                   </div>
                 </div>
               ) : (
                 <>
                   <button
-                    onClick={() => handlePayment('momo')}
+                    onClick={() => handlePayment("momo")}
                     disabled={isLoading}
                     className="w-full py-4 px-6 rounded-xl bg-[#A50064] text-white font-semibold hover:bg-[#8d0056] transition-all flex items-center justify-between group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -116,13 +157,15 @@ export default function UpgradePage() {
                       <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
                         <Smartphone className="w-5 h-5" />
                       </div>
-                      <span>Thanh toán MoMo</span>
+                      <span>{t("Thanh toán MoMo", "Pay with MoMo")}</span>
                     </div>
-                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <div className="w-2 h-2 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity" />}
+                    {isLoading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : null}
                   </button>
 
                   <button
-                    onClick={() => handlePayment('vnpay')}
+                    onClick={() => handlePayment("vnpay")}
                     disabled={isLoading}
                     className="w-full py-4 px-6 rounded-xl bg-[#005BAA] text-white font-semibold hover:bg-[#004e91] transition-all flex items-center justify-between group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -130,17 +173,15 @@ export default function UpgradePage() {
                       <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
                         <CreditCard className="w-5 h-5" />
                       </div>
-                      <span>Thanh toán VNPay</span>
+                      <span>{t("Thanh toán VNPay", "Pay with VNPay")}</span>
                     </div>
-                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <div className="w-2 h-2 rounded-full bg-white opacity-0 group-hover:opacity-100 transition-opacity" />}
+                    {isLoading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : null}
                   </button>
                 </>
               )}
             </div>
-
-            {/* <p className="text-xs text-center text-slate-400 mt-6">
-              Bảo mật thanh toán 100%. Hoàn tiền trong 3 ngày nếu không hài lòng.
-            </p> */}
           </div>
         </div>
       </main>

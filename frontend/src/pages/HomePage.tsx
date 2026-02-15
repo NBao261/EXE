@@ -4,42 +4,51 @@ import {
   FileText,
   Mic,
   Upload,
-  Sparkles,
   ArrowRight,
+  Sparkles,
+  Zap,
+  Brain,
 } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
+import { useLanguageStore } from "../stores/languageStore";
 import Header from "../components/Header";
 
 export default function HomePage() {
   const { user, isAuthenticated } = useAuthStore();
+  const { t } = useLanguageStore();
   const navigate = useNavigate();
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-slate-200 p-8 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-6">
-            <GraduationCap className="w-8 h-8 text-blue-600" />
+      <div className="min-h-screen bg-white dark:bg-[#0F1115] flex items-center justify-center p-6 relative overflow-hidden">
+        {/* Background Blobs */}
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-[#4AA9B3]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#7E57C2]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-[#FFD54F]/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+
+        <div className="w-full max-w-md bg-white/80 dark:bg-[#1A1D24]/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-white/10 p-8 text-center relative z-10">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#4AA9B3] to-[#7E57C2] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#4AA9B3]/20">
+            <GraduationCap className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">
-            Chào mừng đến Revo
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-3 font-[Quicksand]">
+            {t("home.welcome")}
           </h1>
-          <p className="text-slate-600 mb-8">
-            Nền tảng ôn thi và luyện tập bảo vệ đồ án với Revo
+          <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+            {t("home.welcomeDesc")}
           </p>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <button
               onClick={() => navigate("/login")}
-              className="w-full py-3 px-6 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
+              className="w-full py-3.5 px-6 rounded-2xl btn-primary text-white font-bold shadow-lg shadow-[#4AA9B3]/20"
             >
-              Đăng nhập
+              {t("home.loginBtn")}
             </button>
             <button
               onClick={() => navigate("/register")}
-              className="w-full py-3 px-6 rounded-xl bg-white text-blue-600 font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-colors"
+              className="w-full py-3.5 px-6 rounded-2xl bg-white dark:bg-transparent text-[#4AA9B3] dark:text-[#4AA9B3] font-bold border-2 border-[#4AA9B3] hover:bg-[#4AA9B3]/5 dark:hover:bg-[#4AA9B3]/10 transition-all"
             >
-              Tạo tài khoản miễn phí
+              {t("home.createAccountBtn")}
             </button>
           </div>
         </div>
@@ -48,67 +57,74 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/30">
-      {/* Animated background elements */}
+    <div className="min-h-screen bg-white dark:bg-[#0F1115] relative overflow-hidden transition-colors duration-300">
+      {/* Background Blobs - Fixed Position */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#4AA9B3]/20 rounded-full mix-blend-multiply filter blur-[100px] animate-blob opacity-50 dark:opacity-20" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#7E57C2]/20 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000 opacity-50 dark:opacity-20" />
+        <div className="absolute -bottom-32 left-1/3 w-[600px] h-[600px] bg-[#FFD54F]/20 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000 opacity-50 dark:opacity-10" />
       </div>
 
-      {/* Header */}
       <Header />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Welcome Section */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">
-            Xin chào, {user?.name}!
+        <div className="text-center mb-16 relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 mb-6 shadow-sm">
+            <Sparkles className="w-5 h-5 text-[#FFD54F]" />
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+              {t("home.greeting")}{" "}
+              <span className="text-[#4AA9B3] font-bold">{user?.name}</span>!
+            </span>
+          </div>
+
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 font-[Quicksand] leading-tight">
+            <span className="bling-text">{t("home.chooseFeature")}</span>
           </h1>
-          <p className="text-slate-600">Chọn tính năng bạn muốn sử dụng</p>
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Khám phá các công cụ hỗ trợ thông minh giúp bạn ôn tập và chuẩn bị
+            tốt nhất cho kỳ thi.
+          </p>
         </div>
 
         {/* 2 Main Feature Cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-16 relative z-10">
           {/* Smart Review Card */}
           <div
             onClick={() => navigate("/smart-review")}
-            className="group bg-white rounded-3xl p-8 border-2 border-slate-200 hover:border-cyan-400 hover:shadow-xl transition-all cursor-pointer relative overflow-hidden"
+            className="group glass-card rounded-3xl p-10 hover:border-[#4AA9B3]/50 dark:hover:border-[#4AA9B3]/50 transition-all duration-300 cursor-pointer relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <FileText className="w-40 h-40 text-[#4AA9B3]" />
+            </div>
 
-            <div className="relative">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
-                  <FileText className="w-7 h-7 text-white" />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#4AA9B3] to-[#3D8C94] flex items-center justify-center shadow-lg shadow-[#4AA9B3]/30 group-hover:scale-110 transition-transform duration-300">
+                  <Brain className="w-8 h-8 text-white" />
                 </div>
-                <div className="px-3 py-1 rounded-full bg-cyan-100 text-cyan-700 text-xs font-medium flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  Revo-Powered
-                </div>
-              </div>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">
-                Smart Review
-              </h2>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Upload Slide, PDF, Word → Revo tự động tạo{" "}
-                <span className="font-semibold text-cyan-600">Quiz</span> và{" "}
-                <span className="font-semibold text-cyan-600">Flashcard</span>{" "}
-                giúp bạn ôn thi hiệu quả
-              </p>
-
-              {/* Upload hint */}
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 group-hover:border-cyan-300 transition-colors">
-                <Upload className="w-5 h-5 text-slate-400 group-hover:text-cyan-500" />
-                <span className="text-sm text-slate-500 group-hover:text-slate-700">
-                  Kéo thả hoặc chọn file tài liệu
+                <span className="px-4 py-1.5 rounded-full bg-[#4AA9B3]/10 text-[#4AA9B3] text-sm font-bold border border-[#4AA9B3]/20">
+                  {t("home.smartReviewBadge")}
                 </span>
               </div>
 
-              <button className="mt-6 w-full py-3 px-6 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-cyan-500/25 transition-all">
-                Bắt đầu ôn thi
-                <ArrowRight className="w-4 h-4" />
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 font-[Quicksand]">
+                {t("home.smartReview")}
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed text-lg">
+                {t("home.smartReviewDesc")}
+              </p>
+
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-dashed border-slate-200 dark:border-slate-700 group-hover:border-[#4AA9B3]/50 transition-colors mb-8">
+                <Upload className="w-5 h-5 text-slate-400 dark:text-slate-500 group-hover:text-[#4AA9B3]" />
+                <span className="text-sm font-medium text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300">
+                  {t("home.uploadHint")}
+                </span>
+              </div>
+
+              <button className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#4AA9B3] to-[#3D8C94] text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#4AA9B3]/20 group-hover:shadow-xl group-hover:shadow-[#4AA9B3]/30 group-hover:-translate-y-1 transition-all">
+                {t("home.startReview")}
+                <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -116,65 +132,65 @@ export default function HomePage() {
           {/* Mock Defense Card */}
           <div
             onClick={() => navigate("/mock-defense")}
-            className="group bg-white rounded-3xl p-8 border-2 border-slate-200 hover:border-purple-400 hover:shadow-xl transition-all cursor-pointer relative overflow-hidden"
+            className="group glass-card rounded-3xl p-10 hover:border-[#7E57C2]/50 dark:hover:border-[#7E57C2]/50 transition-all duration-300 cursor-pointer relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+              <Mic className="w-40 h-40 text-[#7E57C2]" />
+            </div>
 
-            <div className="relative">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/25">
-                  <Mic className="w-7 h-7 text-white" />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7E57C2] to-[#6747A0] flex items-center justify-center shadow-lg shadow-[#7E57C2]/30 group-hover:scale-110 transition-transform duration-300">
+                  <Mic className="w-8 h-8 text-white" />
                 </div>
-                <div className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-medium flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  Voice Revo
-                </div>
-              </div>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">
-                Mock Defense
-              </h2>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Upload báo cáo → Revo đóng vai{" "}
-                <span className="font-semibold text-purple-600">
-                  hội đồng phản biện
-                </span>{" "}
-                bằng giọng nói, giúp bạn tự tin bảo vệ đồ án
-              </p>
-
-              {/* Upload hint */}
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 group-hover:border-purple-300 transition-colors">
-                <Upload className="w-5 h-5 text-slate-400 group-hover:text-purple-500" />
-                <span className="text-sm text-slate-500 group-hover:text-slate-700">
-                  Kéo thả hoặc chọn file báo cáo
+                <span className="px-4 py-1.5 rounded-full bg-[#7E57C2]/10 text-[#7E57C2] text-sm font-bold border border-[#7E57C2]/20">
+                  {t("home.mockDefenseBadge")}
                 </span>
               </div>
 
-              <button className="mt-6 w-full py-3 px-6 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-purple-500/25 transition-all">
-                Bắt đầu thi thử
-                <ArrowRight className="w-4 h-4" />
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 font-[Quicksand]">
+                {t("home.mockDefense")}
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed text-lg">
+                {t("home.mockDefenseDesc")}
+              </p>
+
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-dashed border-slate-200 dark:border-slate-700 group-hover:border-[#7E57C2]/50 transition-colors mb-8">
+                <Upload className="w-5 h-5 text-slate-400 dark:text-slate-500 group-hover:text-[#7E57C2]" />
+                <span className="text-sm font-medium text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300">
+                  {t("home.uploadReportHint")}
+                </span>
+              </div>
+
+              <button className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#7E57C2] to-[#6747A0] text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#7E57C2]/20 group-hover:shadow-xl group-hover:shadow-[#7E57C2]/30 group-hover:-translate-y-1 transition-all">
+                {t("home.startMockDefense")}
+                <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Quick Tips */}
-        <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-6 text-white">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h3 className="font-semibold mb-1">
-                Mẹo: Chuẩn bị tốt hơn với Revo
-              </h3>
-              <p className="text-blue-100 text-sm">
-                Upload tài liệu chi tiết để Revo tạo câu hỏi sát với nội dung
-                học của bạn
-              </p>
+        {/* <div className="relative z-10 glass-card rounded-3xl p-8 border-l-8 border-l-[#FFD54F]">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-2xl bg-[#FFD54F]/20 text-[#FFD54F]">
+                <Zap className="w-8 h-8" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 font-[Quicksand]">
+                  {t("home.tip")}
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400">
+                  {t("home.tipDesc")}
+                </p>
+              </div>
             </div>
-            <button className="flex-shrink-0 px-5 py-2.5 rounded-xl bg-white text-blue-600 font-semibold hover:bg-blue-50 transition-colors">
-              Xem hướng dẫn
+            <button className="flex-shrink-0 px-6 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+              {t("home.viewGuide")}
             </button>
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

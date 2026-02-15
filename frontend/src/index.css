@@ -1,43 +1,137 @@
 @import "tailwindcss";
 
-/* EdTech AI Platform - Custom Theme */
+/* Revo Platform - Theme System (Milingo Style) */
 @theme {
-  /* Trust Blue + Modern Cyan */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #dbeafe;
-  --color-accent: #06b6d4;
-  --color-accent-hover: #0891b2;
+  /* Milingo Brand Colors */
+  --color-primary: #4aa9b3; /* Teal */
+  --color-primary-hover: #3d8c94;
+  --color-secondary: #7e57c2; /* Purple */
+  --color-secondary-hover: #6747a0;
+  --color-accent: #ffd54f; /* Gold */
+
+  /* Gradients */
+  --image-gradient-primary: linear-gradient(135deg, #4aa9b3 0%, #7e57c2 100%);
+  --image-gradient-bling: linear-gradient(
+    to right,
+    #73ced5 0%,
+    #af86ff 25%,
+    #ffe5a3 50%,
+    #ffffff 75%,
+    #73ced5 100%
+  );
 
   /* Neutrals */
-  --color-bg-main: #f8fafc;
+  --color-bg-main: #ffffff;
   --color-bg-card: #ffffff;
-  --color-bg-dark: #0f172a;
+  --color-bg-dark: #0f1115; /* Milingo Dark Background */
 
   /* Semantic */
   --color-success: #10b981;
   --color-error: #ef4444;
   --color-warning: #f59e0b;
+
+  /* Animations */
+  --animate-blob: blob 7s infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
 }
+
+/* Enable class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Base Styles */
 body {
   font-family:
-    "Poppins",
+    "Inter",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-white text-slate-800 antialiased scroll-smooth;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.brand-font {
+  font-family: "Quicksand", sans-serif;
+}
+
+/* Dark mode body */
+.dark body {
+  @apply bg-[#0F1115] text-[#E5E5E5];
 }
 
 /* Custom Utilities */
 @layer utilities {
   .gradient-brand {
-    background: linear-gradient(135deg, #2563eb 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #4aa9b3 0%, #7e57c2 100%);
+  }
+
+  .gradient-text-brand {
+    background: linear-gradient(135deg, #4aa9b3 0%, #7e57c2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bling-text {
+    background: linear-gradient(
+      to right,
+      #73ced5 0%,
+      #af86ff 25%,
+      #ffe5a3 50%,
+      #73ced5 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
   }
 
   .glass-card {
-    @apply bg-white/95 backdrop-blur-sm border border-slate-200 shadow-lg;
+    @apply bg-white/80 backdrop-blur-md border border-slate-100 shadow-xl shadow-slate-200/50;
+  }
+
+  .dark .glass-card {
+    @apply bg-[#1A1D24]/80 border-slate-700/50 shadow-black/50;
+  }
+
+  /* Dark mode input styles */
+  .input-base {
+    @apply w-full px-4 py-3 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#4AA9B3] focus:ring-4 focus:ring-[#4AA9B3]/10 transition-all;
+  }
+
+  .dark .input-base {
+    @apply border-slate-700 bg-[#1A1D24] text-slate-100 placeholder:text-slate-500 focus:border-[#7E57C2] focus:ring-[#7E57C2]/20;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 rounded-2xl bg-gradient-to-r from-[#4AA9B3] to-[#7E57C2] text-white font-bold hover:shadow-lg hover:shadow-[#7E57C2]/30 hover:scale-[1.02] active:scale-[0.98] transition-all;
   }
 }
